@@ -1,0 +1,9 @@
+.legal-top{border-bottom:1px solid var(--border);background:var(--surface)}
+.legal-top .wrap{max-width:820px;margin:0 auto;padding:16px;display:flex;justify-content:space-between;align-items:center}
+.legal{max-width:820px;margin:0 auto;padding:48px 16px 80px}
+.legal h1{font-size:34px;letter-spacing:-.03em;margin-bottom:8px}
+.legal h2{font-size:19px;margin:36px 0 10px}
+.legal p,.legal li{color:var(--text-2);margin:0 0 10px}
+.legal .todo{background:var(--warning-soft);color:var(--warning);border:1px dashed currentColor;border-radius:10px;padding:12px 14px;font-size:14px;margin:18px 0}
+.notfound{min-height:100vh;display:grid;place-items:center;text-align:center;padding:16px}
+.notfound .code{font-size:96px;font-weight:800;letter-spacing:-.05em;background:linear-gradient(135deg,#6366f1,#a855f7);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}

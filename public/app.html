@@ -3,184 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Dashboard</title>
-<link rel="stylesheet" href="style.css">
-<script src="common.js"></script>
+<meta name="robots" content="noindex">
+<title>Rechnungsblitz</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/app.css">
+<script src="/js/theme.js"></script>
+<script src="/lib/calc.js"></script>
+<script type="module" src="/js/app/main.js"></script>
 </head>
 <body>
-<div class="wrap">
-  <nav>
-    <a class="logo" href="/">⚡ Rechnungs<span>blitz</span></a>
-    <div><span id="who" class="hide-sm" style="color:var(--muted)"></span> <span id="planBadge" class="badge"></span>
-      <button class="btn ghost small" id="logout">Logout</button></div>
-  </nav>
-  <div id="flash" hidden></div>
-
-  <div class="grid">
-    <div class="card">
-      <h3>Dein Plan</h3>
-      <div id="usage"></div>
-      <div class="bar"><div id="usageBar"></div></div>
-      <button class="btn pro" id="upgrade" hidden>⭐ Pro holen – 4,99 €/Monat</button>
-      <button class="btn ghost small" id="manage" hidden>Abo verwalten / kündigen</button>
-    </div>
-    <div class="card">
-      <h3>Pro-Funktionen</h3>
-      <ul class="check" id="features"></ul>
-    </div>
+<div class="shell" id="shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="scrim" id="scrim"></div>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
+    <main id="view"><div class="loading"><div class="spinner"></div></div></main>
   </div>
-
-  <section>
-    <div class="card">
-      <h3>Neue Rechnung</h3>
-      <form id="invForm">
-        <div class="row">
-          <div><label>Rechnungsnummer</label><input id="number" placeholder="automatisch"></div>
-          <div><label>Datum</label><input id="date" type="date"></div>
-        </div>
-        <div class="field"><label>Kunde (Name &amp; Adresse)</label><textarea id="customer" rows="3" required></textarea></div>
-        <label>Positionen (Beschreibung, Menge, Einzelpreis in €)</label>
-        <div id="items"></div>
-        <button type="button" class="btn ghost small" id="addItem">+ Position</button>
-        <p><strong>Summe: <span id="sum">0 €</span></strong></p>
-        <div id="invMsg" hidden></div>
-        <button class="btn">Rechnung erstellen</button>
-      </form>
-    </div>
-  </section>
-
-  <section style="padding-top:0">
-    <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
-        <h3 style="margin:0">Meine Rechnungen</h3>
-        <a class="btn ghost small" id="csv" href="/api/export.csv">CSV exportieren</a>
-      </div>
-      <table><thead><tr><th>Nr.</th><th class="hide-sm">Datum</th><th>Kunde</th><th class="r">Betrag</th><th></th></tr></thead>
-      <tbody id="list"></tbody></table>
-    </div>
-  </section>
-
-  <section style="padding-top:0">
-    <div class="card">
-      <h3>Deine Firmendaten (erscheinen auf jeder Rechnung)</h3>
-      <form id="coForm">
-        <div class="row">
-          <div><label>Name / Firma</label><input id="coName"></div>
-          <div><label>IBAN</label><input id="coIban"></div>
-        </div>
-        <div class="row">
-          <div><label>Adresse</label><textarea id="coAddress" rows="2"></textarea></div>
-          <div><label>Steuernummer (optional)</label><input id="coTax"></div>
-        </div>
-        <div class="field"><label><input type="checkbox" id="coSmall" style="width:auto"> Kleinunternehmer (§ 19 UStG, keine USt.)</label></div>
-        <div class="field" id="logoField"><label>Logo <span class="badge">Pro</span></label><input type="file" id="coLogo" accept="image/png,image/jpeg,image/webp"></div>
-        <div id="coMsg" hidden></div>
-        <button class="btn">Speichern</button>
-      </form>
-    </div>
-  </section>
 </div>
-
-<script>
-let me;
-const FEATURES = [["Unbegrenzt viele Rechnungen", "invoicesPerMonth"], ["Ohne Wasserzeichen", "watermark"], ["Eigenes Logo", "logo"], ["CSV-Export", "csvExport"]];
-
-async function load() {
-  try { me = await api("/me"); } catch { location.href = "/login.html"; return; }
-  const pro = me.plan === "pro";
-  $("who").textContent = me.email;
-  $("planBadge").textContent = pro ? "PRO" : "GRATIS";
-  $("planBadge").className = "badge" + (pro ? "" : " free");
-  const lim = me.limits.invoicesPerMonth;
-  $("usage").textContent = lim ? `${me.usedThisMonth} von ${lim} Rechnungen diesen Monat` : `${me.usedThisMonth} Rechnungen diesen Monat – unbegrenzt`;
-  $("usageBar").style.width = lim ? Math.min(100, me.usedThisMonth / lim * 100) + "%" : "100%";
-  $("upgrade").hidden = pro;
-  $("manage").hidden = !pro;
-  $("features").innerHTML = FEATURES.map(([t]) => `<li class="${pro ? "" : "no"}">${t}</li>`).join("");
-  $("csv").classList.toggle("locked", !me.limits.csvExport);
-  $("logoField").classList.toggle("locked", !me.limits.logo);
-  $("coLogo").disabled = !me.limits.logo;
-  const c = me.company;
-  $("coName").value = c.name || ""; $("coIban").value = c.iban || ""; $("coAddress").value = c.address || "";
-  $("coTax").value = c.taxNumber || ""; $("coSmall").checked = !!c.smallBusiness;
-  loadList();
-}
-
-async function loadList() {
-  const rows = await api("/invoices");
-  $("list").innerHTML = rows.length ? rows.map((r) => `<tr>
-    <td><a href="/invoice.html?id=${r.id}" target="_blank">${esc(r.number)}</a></td>
-    <td class="hide-sm">${new Date(r.date).toLocaleDateString("de-DE")}</td>
-    <td>${esc(r.customer)}</td><td class="r">${eur(r.total)}</td>
-    <td class="r"><button class="btn ghost small" data-del="${r.id}">✕</button></td></tr>`).join("")
-    : `<tr><td colspan="5" style="color:var(--muted)">Noch keine Rechnungen.</td></tr>`;
-}
-
-function addItem(d = "", q = 1, p = "") {
-  const div = document.createElement("div");
-  div.className = "items-row";
-  div.innerHTML = `<input placeholder="Beschreibung" value="${esc(d)}"><input type="number" step="any" min="0" value="${q}"><input type="number" step="0.01" placeholder="Preis" value="${p}"><button type="button" class="btn ghost small">✕</button>`;
-  div.querySelector("button").onclick = () => { div.remove(); updateSum(); };
-  $("items").append(div);
-}
-function readItems() {
-  return [...$("items").children].map((r) => {
-    const [d, q, p] = r.querySelectorAll("input");
-    return { description: d.value, quantity: +q.value, price: +p.value };
-  });
-}
-function updateSum() { $("sum").textContent = eur(readItems().reduce((s, i) => s + i.quantity * i.price, 0)); }
-
-$("items").addEventListener("input", updateSum);
-$("addItem").onclick = () => addItem();
-$("date").valueAsDate = new Date();
-addItem();
-
-$("invForm").onsubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const { id } = await api("/invoices", "POST", { number: $("number").value, date: $("date").value, customer: $("customer").value, items: readItems() });
-    window.open("/invoice.html?id=" + id, "_blank");
-    $("invForm").reset(); $("items").replaceChildren(); addItem(); $("date").valueAsDate = new Date(); updateSum();
-    showMsg($("invMsg"), "");
-    load();
-  } catch (err) {
-    showMsg($("invMsg"), err.message);
-  }
-};
-
-$("list").onclick = async (e) => {
-  const id = e.target.dataset.del;
-  if (id && confirm("Rechnung löschen?")) { await api("/invoices/" + id, "DELETE"); load(); }
-};
-
-$("csv").onclick = (e) => { if (!me.limits.csvExport) { e.preventDefault(); upgrade(); } };
-
-$("coForm").onsubmit = async (e) => {
-  e.preventDefault();
-  const body = { name: $("coName").value, iban: $("coIban").value, address: $("coAddress").value, taxNumber: $("coTax").value, smallBusiness: $("coSmall").checked, logo: me.company.logo };
-  const file = $("coLogo").files[0];
-  if (file) body.logo = await new Promise((ok) => { const r = new FileReader(); r.onload = () => ok(r.result); r.readAsDataURL(file); });
-  try { await api("/company", "PUT", body); showMsg($("coMsg"), "Gespeichert ✓", "ok"); load(); }
-  catch (err) { showMsg($("coMsg"), err.message); }
-};
-
-async function upgrade() {
-  try { location.href = (await api("/checkout", "POST", {})).url; }
-  catch (err) { showMsg($("flash"), err.message); }
-}
-$("upgrade").onclick = upgrade;
-$("manage").onclick = async () => {
-  if (!me.billingEnabled && !confirm("Testmodus: Pro wieder deaktivieren?")) return;
-  location.href = (await api("/portal", "POST", {})).url;
-};
-$("logout").onclick = async () => { await api("/logout", "POST", {}); location.href = "/"; };
-
-if (new URLSearchParams(location.search).has("upgraded")) {
-  showMsg($("flash"), "🎉 Willkommen bei Pro! Alle Funktionen sind freigeschaltet.", "ok");
-  history.replaceState(null, "", "/app.html");
-}
-load();
-</script>
 </body>
 </html>

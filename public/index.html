@@ -3,63 +3,181 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Rechnungsblitz</title>
-<link rel="stylesheet" href="style.css">
+<title>Rechnungsblitz – Rechnungen & Angebote online schreiben</title>
+<meta name="description" content="Professionelle Rechnungen und Angebote in unter einer Minute. Mit Kunden- und Produktkatalog, GiroCode, Kleinunternehmer-Modus und PDF im DIN-5008-Format. 14 Tage Pro gratis.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Rechnungsblitz – Rechnungen schreiben, die nach Profi aussehen">
+<meta property="og:description" content="Rechnungen & Angebote in unter einer Minute. Kleinunternehmer-ready, GiroCode, PDF. 14 Tage Pro gratis, ohne Kreditkarte.">
+<meta property="og:image" content="/img/app-screenshot.png">
+<meta property="og:locale" content="de_DE">
+<meta name="theme-color" content="#4f46e5">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/landing.css">
+<script src="/js/theme.js"></script>
+<script type="module" src="/js/landing.js"></script>
 </head>
 <body>
-<div class="wrap">
-  <nav>
-    <a class="logo" href="/">⚡ Rechnungs<span>blitz</span></a>
-    <div><a class="btn ghost small" href="/login.html">Login</a> <a class="btn small" href="/login.html#register">Gratis starten</a></div>
-  </nav>
 
-  <header class="hero">
-    <h1>Rechnungen in 30 Sekunden.<br>Als PDF. Ohne Excel.</h1>
-    <p>Für Freelancer, Kleinunternehmer und Nebenjobs. Positionen eintippen, Rechnung herunterladen, fertig – inklusive §19-Hinweis für Kleinunternehmer.</p>
-    <a class="btn" href="/login.html#register">Kostenlos ausprobieren</a>
-  </header>
+<header class="lp-nav" id="nav">
+  <div class="container">
+    <a class="brand" href="/" data-brand>Rechnungsblitz</a>
+    <nav class="lp-links"><a href="#funktionen">Funktionen</a><a href="#so-gehts">So geht's</a><a href="#preise">Preise</a><a href="#faq">FAQ</a></nav>
+    <div class="lp-cta">
+      <a class="btn btn-ghost hide-s" href="/login" id="loginLink">Anmelden</a>
+      <a class="btn btn-primary" href="/login?neu=1">Kostenlos starten</a>
+    </div>
+  </div>
+</header>
 
-  <section>
-    <div class="grid">
-      <div class="card"><h3>⚡ Blitzschnell</h3><p>Rechnung ausfüllen und direkt als PDF speichern oder drucken.</p></div>
-      <div class="card"><h3>🧮 Rechnet automatisch</h3><p>Summen, Beträge und Rechnungsnummern – keine Tippfehler mehr.</p></div>
-      <div class="card"><h3>📁 Alles an einem Ort</h3><p>Alle Rechnungen gespeichert und jederzeit wieder abrufbar.</p></div>
+<main>
+  <section class="hero">
+    <div class="container">
+      <a class="eyebrow" href="#girocode"><span class="tag">Neu</span>GiroCode: Kunden bezahlen per QR-Scan <i data-icon="arrow"></i></a>
+      <h1>Rechnungen schreiben, die nach <span class="grad">Profi</span> aussehen.</h1>
+      <p class="lead">Kunde wählen, Leistung anklicken, PDF verschicken. Rechnungsblitz erledigt Nummern, Steuern und Pflichtangaben für dich – in unter einer Minute.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary btn-lg" href="/login?neu=1">14 Tage Pro gratis testen <i data-icon="arrow"></i></a>
+        <a class="btn btn-secondary btn-lg" href="#preise">Preise ansehen</a>
+      </div>
+      <div class="micro"><span><i data-icon="check"></i>Keine Kreditkarte nötig</span><span><i data-icon="check"></i>In 2 Minuten startklar</span><span><i data-icon="check"></i>Danach kostenlos weiter nutzbar</span></div>
+      <div class="shot reveal"><img src="/img/app-screenshot.png" width="2160" height="1350" alt="Rechnungsblitz: Rechnungs-Editor mit Live-Vorschau"></div>
     </div>
   </section>
 
-  <section id="preise">
-    <h2>Preise</h2>
-    <div class="grid" style="max-width:720px;margin:0 auto">
-      <div class="card">
-        <h3>Gratis</h3>
-        <div class="price">0 € <small>/ Monat</small></div>
-        <ul class="check">
-          <li>3 Rechnungen pro Monat</li>
-          <li>PDF-Download</li>
-          <li class="no">Ohne Wasserzeichen</li>
-          <li class="no">Eigenes Logo</li>
-          <li class="no">CSV-Export für die Steuer</li>
-        </ul>
-        <a class="btn ghost" href="/login.html#register">Gratis starten</a>
+  <section class="trust">
+    <div class="container">
+      <div><i data-icon="shield"></i>Alle Pflichtangaben nach § 14 UStG</div>
+      <div><i data-icon="percent"></i>Kleinunternehmer-Modus (§ 19 UStG)</div>
+      <div><i data-icon="invoice"></i>PDF im DIN-5008-Format</div>
+      <div><i data-icon="lock"></i>Keine Tracker, keine Werbung</div>
+    </div>
+  </section>
+
+  <section class="section" id="funktionen">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="kicker">Funktionen</div>
+        <h2>Alles, was du für saubere Rechnungen brauchst. Nichts, was dich aufhält.</h2>
+        <p>Rechnungsblitz ist für Selbstständige gemacht, die lieber arbeiten als Excel-Tabellen zu pflegen.</p>
       </div>
-      <div class="card highlight">
-        <h3>Pro <span class="badge">Beliebt</span></h3>
-        <div class="price">4,99 € <small>/ Monat</small></div>
-        <ul class="check">
-          <li>Unbegrenzt viele Rechnungen</li>
-          <li>PDF-Download</li>
-          <li>Ohne Wasserzeichen</li>
-          <li>Eigenes Logo</li>
-          <li>CSV-Export für die Steuer</li>
-        </ul>
-        <a class="btn pro" href="/login.html#register">Pro holen</a>
-        <p style="color:var(--muted);font-size:.85rem">Jederzeit monatlich kündbar.</p>
+      <div class="features">
+        <div class="feature reveal"><div class="fi"><i data-icon="package"></i></div><h3>Produktkatalog</h3><p>Leistungen und Produkte einmal mit Preis anlegen – danach landen sie mit einem Klick auf jeder Rechnung.</p></div>
+        <div class="feature reveal"><div class="fi"><i data-icon="users"></i></div><h3>Kundenverwaltung</h3><p>Kunden speichern und beim Schreiben auswählen. Anschrift und Ansprechpartner sind sofort drin.</p></div>
+        <div class="feature reveal"><div class="fi"><i data-icon="convert"></i></div><h3>Angebot → Rechnung</h3><p>Schick ein Angebot. Sagt der Kunde ja, wird daraus per Klick die fertige Rechnung.</p></div>
+        <div class="feature reveal"><div class="fi"><i data-icon="qr"></i></div><h3>GiroCode <span class="pro-pill">PRO</span></h3><p>Ein QR-Code auf der Rechnung: Kunden scannen ihn mit der Banking-App – Betrag und IBAN sind schon ausgefüllt.</p></div>
+        <div class="feature reveal"><div class="fi"><i data-icon="eye"></i></div><h3>Live-Vorschau</h3><p>Du siehst beim Tippen, wie deine Rechnung aussieht. Das PDF entspricht exakt dem DIN-A4-Standard.</p></div>
+        <div class="feature reveal"><div class="fi"><i data-icon="bell"></i></div><h3>Zahlungen im Blick <span class="pro-pill">PRO</span></h3><p>Offen, bezahlt, überfällig: Die Übersicht zeigt, wo Geld fehlt. Erinnerungen erstellst du mit einem Klick.</p></div>
       </div>
     </div>
   </section>
 
-  <footer>© <span id="y"></span> Rechnungsblitz · <a href="/impressum.html">Impressum &amp; Datenschutz</a></footer>
-</div>
-<script>document.getElementById("y").textContent = new Date().getFullYear();</script>
+  <section class="section" id="girocode" style="padding-top:0">
+    <div class="container split">
+      <div class="reveal">
+        <div class="kicker">Schneller bezahlt werden</div>
+        <h2>Rechnungen, die sich fast von selbst bezahlen.</h2>
+        <p class="lead">Jede Pro-Rechnung bekommt einen GiroCode. Dein Kunde scannt, prüft, bestätigt – fertig. Keine Tippfehler bei der IBAN, kein „Ich überweis' das später“.</p>
+        <ul class="check-list">
+          <li><i data-icon="check"></i><span>Funktioniert mit den Banking-Apps fast aller deutschen Banken und Sparkassen</span></li>
+          <li><i data-icon="check"></i><span>Betrag, IBAN und Verwendungszweck automatisch ausgefüllt</span></li>
+          <li><i data-icon="check"></i><span>Dein Logo und deine Markenfarbe auf jedem Dokument</span></li>
+        </ul>
+      </div>
+      <div class="pdf-frame reveal">
+        <img src="/img/invoice-example.png" width="1240" height="1754" alt="Beispielrechnung als PDF mit GiroCode">
+        <div class="float"><div class="fi"><i data-icon="checkCircle"></i></div><div><strong>Bezahlt</strong><span class="muted">per GiroCode</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="so-gehts" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="kicker">So geht's</div>
+        <h2>Von null zur ersten Rechnung in drei Schritten.</h2>
+      </div>
+      <div class="steps-row">
+        <div class="step-card reveal"><h3>Konto anlegen</h3><p>E-Mail und Passwort – mehr braucht es nicht. Du startest direkt mit 14 Tagen Pro.</p></div>
+        <div class="step-card reveal"><h3>Firmendaten eintragen</h3><p>Name, Anschrift, Bankverbindung und Steuernummer. Einmal ausgefüllt, auf jeder Rechnung dabei.</p></div>
+        <div class="step-card reveal"><h3>Rechnung schreiben</h3><p>Kunde wählen, Leistungen anklicken, PDF herunterladen und verschicken. Fertig.</p></div>
+      </div>
+      <div class="audience reveal">
+        <span>Freelancer</span><span>Kleinunternehmer</span><span>Kreative & Designer</span><span>Handwerk</span><span>Coaches & Berater</span><span>Fotografen</span><span>Nachhilfe</span><span>Nebengewerbe</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="preise">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="kicker">Preise</div>
+        <h2>Fair und transparent. Jederzeit kündbar.</h2>
+        <p>Starte kostenlos. Wechsle zu Pro, wenn dein Business wächst.</p>
+      </div>
+      <div class="toggle-wrap"><div class="seg" id="intervalToggle"><button data-interval="month">Monatlich</button><button data-interval="year" class="active">Jährlich <span class="save-tag">2 Monate gratis</span></button></div></div>
+      <div class="pricing">
+        <div class="price-card reveal">
+          <div><h3>Starter</h3><p class="desc">Zum Reinschnuppern und für gelegentliche Aufträge.</p></div>
+          <div><div class="amount">0 € <small>/ Monat</small></div><div class="billed">Für immer kostenlos</div></div>
+          <a class="btn btn-secondary btn-lg" href="/login?neu=1">Kostenlos starten</a>
+          <ul class="feature-list">
+            <li><i data-icon="check"></i>3 Rechnungen & Angebote pro Monat</li>
+            <li><i data-icon="check"></i>Je 5 Kunden & Produkte</li>
+            <li><i data-icon="check"></i>PDF im DIN-5008-Format</li>
+            <li><i data-icon="check"></i>Angebot → Rechnung per Klick</li>
+            <li class="off"><i data-icon="x"></i>Mit Rechnungsblitz-Hinweis</li>
+          </ul>
+        </div>
+        <div class="price-card featured reveal">
+          <div><h3>Pro <span class="pro-pill">BELIEBT</span></h3><p class="desc">Für Selbstständige, die professionell auftreten.</p></div>
+          <div><div class="amount" id="proPrice">4,92 € <small>/ Monat</small></div><div class="billed" id="proBilled">59 € jährlich abgerechnet</div></div>
+          <a class="btn btn-primary btn-lg" href="/login?neu=1">14 Tage gratis testen</a>
+          <ul class="feature-list">
+            <li><i data-icon="check"></i><span><strong>Unbegrenzt</strong> Rechnungen, Kunden & Produkte</span></li>
+            <li><i data-icon="check"></i>GiroCode auf jeder Rechnung</li>
+            <li><i data-icon="check"></i>Eigenes Logo & Markenfarbe</li>
+            <li><i data-icon="check"></i>Ohne Rechnungsblitz-Hinweis</li>
+            <li><i data-icon="check"></i>Zahlungserinnerungen per Klick</li>
+            <li><i data-icon="check"></i>CSV-Export für die Steuer</li>
+          </ul>
+        </div>
+      </div>
+      <p class="hint" style="text-align:center;margin-top:20px">Keine Einrichtungsgebühr · Kündigung jederzeit zum Ende des Zeitraums · Sichere Zahlung über Stripe</p>
+    </div>
+  </section>
+
+  <section class="section" id="faq" style="padding-top:0">
+    <div class="container">
+      <div class="section-head reveal"><div class="kicker">FAQ</div><h2>Häufige Fragen</h2></div>
+      <div class="faq">
+        <details><summary>Sind die Rechnungen rechtssicher?<i data-icon="chevronDown"></i></summary><p>Rechnungsblitz führt dich durch alle Pflichtangaben nach § 14 UStG: vollständige Anschriften, Steuernummer oder USt-IdNr., fortlaufende Rechnungsnummer, Rechnungs- und Leistungsdatum, Netto, Steuersatz und Steuerbetrag. Für deine individuelle steuerliche Situation ersetzt das keine Steuerberatung.</p></details>
+        <details><summary>Ich bin Kleinunternehmer – geht das?<i data-icon="chevronDown"></i></summary><p>Ja. Mit einem Schalter wird keine Umsatzsteuer ausgewiesen und der vorgeschriebene Hinweis auf § 19 UStG automatisch auf die Rechnung gesetzt.</p></details>
+        <details><summary>Was passiert nach den 14 Tagen Testphase?<i data-icon="chevronDown"></i></summary><p>Nichts, was dich Geld kostet. Ohne Upgrade geht es automatisch im kostenlosen Starter-Plan weiter. Deine Daten bleiben vollständig erhalten. Du musst nichts kündigen.</p></details>
+        <details><summary>Wie kündige ich Pro?<i data-icon="chevronDown"></i></summary><p>Mit zwei Klicks unter „Abo & Plan“. Das Abo läuft dann bis zum Ende des bezahlten Zeitraums und wechselt anschließend in den Starter-Plan.</p></details>
+        <details><summary>Was ist mit der E-Rechnung?<i data-icon="chevronDown"></i></summary><p>Kleinunternehmer sind von der Pflicht zur Ausstellung von E-Rechnungen ausgenommen und können weiter PDF-Rechnungen verschicken. Für alle anderen gilt die Pflicht im B2B-Bereich schrittweise ab 2027. Die Unterstützung für XRechnung und ZUGFeRD ist in Arbeit.</p></details>
+        <details><summary>Wo liegen meine Daten?<i data-icon="chevronDown"></i></summary><p>Deine Daten gehören dir: Du kannst sie jederzeit vollständig exportieren oder dein Konto löschen. Wir setzen keine Tracking- oder Werbe-Cookies ein und laden keine Schriften oder Skripte von Drittanbietern.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="cta-band reveal">
+      <h2>Deine nächste Rechnung ist in einer Minute fertig.</h2>
+      <p>Teste alle Pro-Funktionen 14 Tage kostenlos. Ohne Kreditkarte, ohne Risiko.</p>
+      <a class="btn btn-white btn-lg" href="/login?neu=1">Jetzt kostenlos starten <i data-icon="arrow"></i></a>
+    </div>
+  </section>
+</main>
+
+<footer class="lp-footer">
+  <div class="container">
+    <div class="about"><a class="brand" href="/" data-brand>Rechnungsblitz</a><p class="muted" style="margin-top:12px;max-width:320px;font-size:14.5px">Rechnungen und Angebote online schreiben – einfach, schnell und professionell.</p></div>
+    <div><h4>Produkt</h4><ul><li><a href="#funktionen">Funktionen</a></li><li><a href="#preise">Preise</a></li><li><a href="#faq">FAQ</a></li><li><a href="/login">Anmelden</a></li></ul></div>
+    <div><h4>Rechtliches</h4><ul><li><a href="/impressum">Impressum</a></li><li><a href="/datenschutz">Datenschutz</a></li><li><a href="/agb">AGB</a></li></ul></div>
+    <div class="copy"><span>© <span id="year"></span> Rechnungsblitz</span><span>Mit Sorgfalt gemacht für Selbstständige.</span></div>
+  </div>
+</footer>
 </body>
 </html>

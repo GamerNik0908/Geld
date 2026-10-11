@@ -3,40 +3,46 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Login</title>
-<link rel="stylesheet" href="style.css">
-<script src="common.js"></script>
+<title>Anmelden · Rechnungsblitz</title>
+<meta name="description" content="Melde dich bei Rechnungsblitz an oder erstelle kostenlos ein Konto.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/auth.css">
+<script src="/js/theme.js"></script>
+<script type="module" src="/js/login.js"></script>
 </head>
 <body>
-<div class="wrap">
-  <nav><a class="logo" href="/">⚡ Rechnungs<span>blitz</span></a></nav>
-  <div class="card" style="max-width:420px;margin:40px auto">
-    <h2 id="title">Einloggen</h2>
-    <form id="form">
-      <div class="field"><label for="email">E-Mail</label><input id="email" type="email" required autocomplete="email"></div>
-      <div class="field"><label for="password">Passwort</label><input id="password" type="password" required minlength="8" autocomplete="current-password"></div>
-      <div id="msg" hidden></div>
-      <button class="btn" id="submit" style="width:100%">Einloggen</button>
-    </form>
-    <p style="text-align:center"><a href="#" id="toggle">Noch kein Konto? Registrieren</a></p>
+<div class="auth">
+  <div class="auth-form">
+    <a class="brand" href="/" id="brand"></a>
+    <div class="inner">
+      <div><h1 id="title">Willkommen zurück</h1><p class="sub" id="subtitle">Melde dich an, um weiterzuarbeiten.</p></div>
+      <form id="form" novalidate>
+        <label class="field"><span>E-Mail-Adresse</span><input class="input" id="email" type="email" required autocomplete="email" placeholder="du@beispiel.de"></label>
+        <label class="field"><span>Passwort</span>
+          <div class="pw-wrap"><input class="input" id="password" type="password" required minlength="8" autocomplete="current-password" placeholder="Mindestens 8 Zeichen"><button type="button" class="btn btn-ghost btn-sm" id="showPw">Anzeigen</button></div></label>
+        <label class="check" id="termsRow" hidden><input type="checkbox" id="terms"><span class="hint">Ich akzeptiere die <a href="/agb" target="_blank">AGB</a> und habe die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a> gelesen.</span></label>
+        <div id="msg" class="alert alert-danger" hidden></div>
+        <button class="btn btn-primary btn-lg" id="submit">Anmelden</button>
+      </form>
+      <p class="auth-foot" id="switch"></p>
+    </div>
+    <p class="auth-foot"><a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a></p>
   </div>
+  <aside class="auth-side">
+    <h2>Rechnungen schreiben, die nach Profi aussehen.</h2>
+    <ul>
+      <li><i data-icon="check"></i><span>14 Tage alle Pro-Funktionen gratis – ohne Kreditkarte</span></li>
+      <li><i data-icon="check"></i><span>Alle Pflichtangaben nach § 14 UStG, Kleinunternehmer-ready</span></li>
+      <li><i data-icon="check"></i><span>Kunden & Produkte speichern, per Klick einfügen</span></li>
+      <li><i data-icon="check"></i><span>GiroCode: Deine Kunden zahlen per QR-Scan</span></li>
+    </ul>
+    <div class="mini">
+      <div class="row"><span>Website-Relaunch</span><span>1.450,00 €</span></div>
+      <div class="row"><span>Fotoshooting · 3,5 Std.</span><span>297,50 €</span></div>
+      <div class="row"><span>Gesamtbetrag</span><span>1.747,50 €</span></div>
+    </div>
+  </aside>
 </div>
-<script>
-let register = location.hash === "#register";
-function render() {
-  $("title").textContent = $("submit").textContent = register ? "Konto erstellen" : "Einloggen";
-  $("toggle").textContent = register ? "Schon ein Konto? Einloggen" : "Noch kein Konto? Registrieren";
-  $("password").autocomplete = register ? "new-password" : "current-password";
-}
-$("toggle").onclick = (e) => { e.preventDefault(); register = !register; render(); };
-$("form").onsubmit = async (e) => {
-  e.preventDefault();
-  try {
-    await api(register ? "/register" : "/login", "POST", { email: $("email").value, password: $("password").value });
-    location.href = "/app.html";
-  } catch (err) { showMsg($("msg"), err.message); }
-};
-render();
-</script>
 </body>
 </html>
