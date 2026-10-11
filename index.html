@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Angebote</title>
+<link rel="stylesheet" href="style.css">
+<script src="config.js"></script>
+</head>
+<body>
+<header class="hero wrap">
+  <h1 id="name"></h1>
+  <p id="slogan"></p>
+  <a class="btn" href="#angebote">Angebote ansehen</a>
+</header>
+
+<section id="angebote" class="wrap">
+  <h2>Meine Angebote</h2>
+  <div class="grid" id="liste"></div>
+</section>
+
+<section id="stimmen-sec" class="wrap" hidden>
+  <h2>Das sagen Kunden</h2>
+  <div class="grid" id="stimmen"></div>
+</section>
+
+<section class="wrap" style="text-align:center">
+  <h2>Individuelle Anfrage?</h2>
+  <p>Schreib mir – ich antworte meist innerhalb von 24 Stunden.</p>
+  <a class="btn alt" id="kontakt">E-Mail schreiben</a>
+</section>
+
+<footer class="wrap">
+  © <span id="jahr"></span> <span id="fname"></span> ·
+  <a href="impressum.html">Impressum &amp; Datenschutz</a>
+</footer>
+
+<script>
+const c = window.SHOP_CONFIG;
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+document.title = c.name;
+$("name").textContent = $("fname").textContent = c.name;
+$("slogan").textContent = c.slogan;
+$("jahr").textContent = new Date().getFullYear();
+$("kontakt").href = "mailto:" + c.email;
+
+$("liste").innerHTML = c.angebote.map(a => {
+  const href = a.link || `mailto:${c.email}?subject=${encodeURIComponent("Anfrage: " + a.titel)}`;
+  const label = a.link ? "Jetzt kaufen" : "Anfragen";
+  return `<div class="card">
+    <span class="typ">${esc(a.typ)}</span>
+    <h3>${esc(a.titel)}</h3>
+    <p>${esc(a.beschreibung)}</p>
+    <div class="preis">${esc(a.preis)}</div>
+    <a class="btn" href="${esc(href)}" target="_blank" rel="noopener">${label}</a>
+  </div>`;
+}).join("");
+
+if (c.stimmen.length) {
+  document.getElementById("stimmen-sec").hidden = false;
+  $("stimmen").innerHTML = c.stimmen.map(s =>
+    `<blockquote>„${esc(s.text)}“<br><small>– ${esc(s.name)}</small></blockquote>`).join("");
+}
+</script>
+</body>
+</html>

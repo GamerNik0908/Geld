@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rechnung erstellen</title>
+<link rel="stylesheet" href="style.css">
+<script src="config.js"></script>
+<style>
+  .form{display:grid;gap:12px;grid-template-columns:1fr 1fr;margin:24px 0}
+  .form .voll{grid-column:1/-1}
+  table{width:100%;border-collapse:collapse;margin:16px 0}
+  th,td{padding:8px;border-bottom:1px solid #ddd;text-align:left}
+  td.r,th.r{text-align:right}
+  #blatt{overflow-x:auto;background:#fff;color:#111;padding:40px;border-radius:12px;margin:24px 0;white-space:normal}
+  #blatt pre{font:inherit;margin:0;white-space:pre-line}
+  .kopf{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  @media (max-width:600px){.form{grid-template-columns:1fr}#blatt{padding:16px;font-size:.85rem}th,td{padding:6px 4px}}
+  @media print{body{background:#fff}.noprint{display:none!important}#blatt{margin:0;padding:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="noprint">
+    <h1>Rechnung erstellen</h1>
+    <p>Felder ausfüllen → „Als PDF speichern“ → im Druckdialog „Als PDF speichern“ wählen.</p>
+    <div class="form">
+      <div><label>Rechnungsnummer</label><input id="nr"></div>
+      <div><label>Datum</label><input id="datum" type="date"></div>
+      <div class="voll"><label>Kunde (Name &amp; Adresse)</label><textarea id="kunde" rows="3"></textarea></div>
+      <div class="voll"><label>Positionen – eine pro Zeile: Beschreibung ; Menge ; Einzelpreis</label>
+        <textarea id="pos" rows="4">Website-Erstellung ; 1 ; 149
+Nachhilfe (Std.) ; 2 ; 25</textarea></div>
+    </div>
+    <button class="btn" onclick="print()">Als PDF speichern</button>
+  </div>
+
+  <div id="blatt">
+    <div class="kopf">
+      <div><strong id="b-name"></strong><pre id="b-adr"></pre><span id="b-mail"></span></div>
+      <div><pre id="b-kunde"></pre></div>
+    </div>
+    <h2 style="margin-top:32px">Rechnung <span id="b-nr"></span></h2>
+    <div>Datum: <span id="b-datum"></span></div>
+    <table>
+      <thead><tr><th>Beschreibung</th><th class="r">Menge</th><th class="r">Einzelpreis</th><th class="r">Summe</th></tr></thead>
+      <tbody id="b-pos"></tbody>
+      <tfoot><tr><th colspan="3" class="r">Gesamtbetrag</th><th class="r" id="b-summe"></th></tr></tfoot>
+    </table>
+    <p id="b-hinweis"></p>
+    <p>Bitte überweise den Betrag innerhalb von 14 Tagen auf:<br>
+       IBAN: <span id="b-iban"></span><br>
+       Verwendungszweck: Rechnung <span id="b-nr2"></span></p>
+    <p id="b-steuer"></p>
+  </div>
+</div>
+
+<script>
+const c = window.SHOP_CONFIG, r = c.rechnung;
+const eur = n => n.toLocaleString("de-DE", {style:"currency", currency:"EUR"});
+const num = s => parseFloat(String(s).replace(",", ".")) || 0;
+const $ = id => document.getElementById(id);
+
+$("datum").valueAsDate = new Date();
+$("nr").value = new Date().getFullYear() + "-001";
+$("b-name").textContent = c.name;
+$("b-adr").textContent = r.adresse;
+$("b-mail").textContent = c.email;
+$("b-iban").textContent = r.iban;
+$("b-steuer").textContent = r.steuernummer ? "Steuernummer: " + r.steuernummer : "";
+$("b-hinweis").textContent = r.kleinunternehmer
+  ? "Gemäß § 19 UStG wird keine Umsatzsteuer berechnet." : "";
+
+function render() {
+  $("b-nr").textContent = $("b-nr2").textContent = $("nr").value;
+  $("b-datum").textContent = $("datum").value
+    ? new Date($("datum").value).toLocaleDateString("de-DE") : "";
+  $("b-kunde").textContent = $("kunde").value;
+  let total = 0;
+  const tbody = $("b-pos");
+  tbody.replaceChildren();
+  $("pos").value.split("\n").filter(z => z.trim()).forEach(z => {
+    const [beschr = "", menge = "1", preis = "0"] = z.split(";").map(s => s.trim());
+    const m = num(menge), p = num(preis), s = m * p;
+    total += s;
+    const tr = tbody.insertRow();
+    [beschr, m, eur(p), eur(s)].forEach((v, i) => {
+      const td = tr.insertCell(); td.textContent = v; if (i) td.className = "r";
+    });
+  });
+  $("b-summe").textContent = eur(total);
+}
+document.querySelectorAll("input,textarea").forEach(e => e.addEventListener("input", render));
+render();
+</script>
+</body>
+</html>
