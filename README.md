@@ -1,46 +1,70 @@
-# Geld – deine eigene Verkaufsseite + Rechnungsgenerator
+# ⚡ Rechnungsblitz – Rechnungs-Tool mit Abo-Modell
 
-Ein kostenloses Starter-Kit, um **eigene Produkte oder Dienstleistungen online zu verkaufen** –
-ohne Programmierkenntnisse, ohne monatliche Kosten.
+Eine fertige Web-App (SaaS): Nutzer erstellen sich ein Konto und schreiben Rechnungen als PDF.
+**Gratis** gibt es 3 Rechnungen im Monat. Mit dem **Pro-Abo (4,99 €/Monat)** schalten sie
+weitere Funktionen frei. Bezahlt wird über **Stripe**: Karte, Apple Pay, Google Pay, SEPA usw.
 
-| Datei | Wofür |
-|---|---|
-| `index.html` | Verkaufsseite mit deinen Angeboten und „Jetzt kaufen“-Buttons |
-| `rechnung.html` | Rechnungen erstellen und als PDF speichern |
-| `impressum.html` | Vorlage für Impressum & Datenschutz (in DE Pflicht) |
-| `config.js` | **Die einzige Datei, die du bearbeiten musst** |
+| | Gratis | Pro |
+|---|---|---|
+| Rechnungen pro Monat | 3 | unbegrenzt |
+| PDF-Download | ✓ | ✓ |
+| Ohne Wasserzeichen „Erstellt mit Rechnungsblitz“ | ✕ | ✓ |
+| Eigenes Logo | ✕ | ✓ |
+| CSV-Export für die Steuer | ✕ | ✓ |
 
-## In 4 Schritten online
+Das Wasserzeichen auf den Gratis-Rechnungen ist gleichzeitig Werbung: Jeder Empfänger sieht den Namen.
 
-1. **`config.js` anpassen** – Name, E-Mail, deine Angebote und Preise eintragen.
-2. **Zahlungslinks erstellen** (kostenlos, Gebühr nur pro Verkauf) und bei `link` eintragen:
-   - [Stripe Payment Links](https://stripe.com/de/payments/payment-links) – Karte, Apple Pay, Klarna …
-   - [PayPal.me](https://www.paypal.com/paypalme/) – z. B. `https://paypal.me/deinname/25`
-   - [Gumroad](https://gumroad.com) / [Ko-fi](https://ko-fi.com) – ideal für digitale Downloads (liefern die Datei automatisch aus)
-   - Ohne Link öffnet der Button einfach eine E-Mail-Anfrage.
-3. **`impressum.html` mit echten Daten ausfüllen.**
-4. **Kostenlos veröffentlichen mit GitHub Pages:** Repository → *Settings* → *Pages* →
-   Branch auswählen → *Save*. Nach ~1 Minute ist die Seite unter
-   `https://<dein-name>.github.io/Geld/` erreichbar.
+Die Grenzen werden **auf dem Server** geprüft und lassen sich nicht im Browser umgehen.
+Neue Pro-Funktionen trägst du im Objekt `PLANS` in `server.js` ein.
 
-## Ideen, womit du realistisch Geld verdienen kannst
+## Lokal starten
 
-- **Dienstleistungen** (schnellster Weg zum ersten Euro): Nachhilfe, PC-/Handy-Hilfe für Senioren,
-  Social-Media-Betreuung für lokale Läden, Videoschnitt, Übersetzungen, Websites erstellen.
-- **Digitale Produkte** (einmal erstellen, oft verkaufen): Canva-/Notion-Vorlagen, Lernzettel,
-  Presets, E-Books, Checklisten.
-- **Kunden finden:** Link in deine TikTok-/Instagram-Bio, lokale Geschäfte direkt ansprechen,
-  Kleinanzeigen, Facebook-Gruppen, Schwarzes Brett.
+```bash
+npm install
+npm start          # → http://localhost:3000
+npm test
+```
 
-## Wichtig (Deutschland)
+Ohne Stripe-Key läuft die App im **Testmodus**: „Pro holen“ schaltet Pro sofort frei, ohne Zahlung.
+So kannst du alles ausprobieren.
 
-- Wer regelmäßig verkauft, braucht in der Regel ein **Gewerbe** (Anmeldung beim Gewerbeamt, ca. 20–60 €)
-  bzw. meldet eine freiberufliche Tätigkeit beim Finanzamt an.
-- Mit der **Kleinunternehmerregelung (§ 19 UStG)** musst du keine Umsatzsteuer ausweisen
-  (aktuelle Umsatzgrenzen beim Finanzamt prüfen). Im Rechnungsgenerator per
-  `kleinunternehmer: true` eingestellt.
-- **Unter 18?** Dann brauchst du für ein Gewerbe die Zustimmung der Eltern (und ggf. des Familiengerichts).
-- Bei Unsicherheit: kurz beim Finanzamt oder einer Steuerberatung nachfragen.
+## Echte Zahlungen aktivieren (Stripe)
 
-Keine Software verdient von allein Geld – aber hiermit hast du in einer Stunde einen
-professionellen Auftritt, über den Kunden direkt bei dir kaufen können.
+1. Konto bei [stripe.com](https://stripe.com) anlegen (kostenlos, Gebühr nur pro Zahlung, ca. 1,5 % + 0,25 €).
+2. **Produkt anlegen**: „Rechnungsblitz Pro“ mit einem *wiederkehrenden* Preis von 4,99 €/Monat.
+   Die Preis-ID (`price_...`) kopieren.
+3. `.env.example` nach `.env` kopieren und ausfüllen: `STRIPE_SECRET_KEY`, `STRIPE_PRICE_ID`, `BASE_URL`.
+4. **Webhook einrichten**, damit die App erfährt, wer bezahlt oder gekündigt hat:
+   Dashboard → Entwickler → Webhooks → Endpunkt `https://deine-domain.de/api/stripe/webhook`
+   mit den Events `checkout.session.completed`, `customer.subscription.created`,
+   `customer.subscription.updated` und `customer.subscription.deleted`.
+   Das Signing-Secret kommt in `STRIPE_WEBHOOK_SECRET`.
+   Lokal geht das mit `stripe listen --forward-to localhost:3000/api/stripe/webhook`.
+5. **Kundenportal aktivieren** (Einstellungen → Billing → Kundenportal). Darüber kündigen Kunden
+   selbst; in Deutschland ist ein Kündigungsbutton Pflicht.
+
+Erst mit Test-Keys (`sk_test_...`) und der Testkarte `4242 4242 4242 4242` ausprobieren,
+dann auf Live-Keys umstellen.
+
+## Online stellen
+
+Jeder Node.js-Hoster funktioniert, z. B. Railway, Render, Fly.io oder ein VPS (Hetzner ab ca. 4 €/Monat).
+Wichtig: Die Datenbank `data.db` muss auf einem **dauerhaften Speicher** liegen
+(Volume / persistent disk), sonst gehen die Daten bei jedem Neustart verloren.
+Variable `DB_PATH` auf diesen Pfad setzen. Voraussetzung: Node.js ≥ 22.13.
+
+## Bevor du Geld nimmst (Deutschland)
+
+- **Gewerbe anmelden.** Für ein kostenpflichtiges Abo brauchst du das. Unter 18 nur mit Zustimmung der Eltern und des Familiengerichts.
+- **Impressum, Datenschutzerklärung, AGB und Widerrufsbelehrung** in `public/impressum.html` ergänzen
+  (Generatoren z. B. bei e-recht24.de).
+- **Steuern:** Einnahmen beim Finanzamt angeben, eventuell die Kleinunternehmerregelung nutzen.
+
+## Aufbau
+
+```
+server.js        API: Login, Rechnungen, Plan-Grenzen, Stripe-Checkout/Portal/Webhook
+db.js            SQLite-Datenbank (eingebaut in Node, keine Installation nötig)
+public/          Landingpage, Login, Dashboard, Rechnungsansicht
+test/            automatische Tests (npm test)
+```

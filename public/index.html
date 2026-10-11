@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rechnungsblitz</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="logo" href="/">⚡ Rechnungs<span>blitz</span></a>
+    <div><a class="btn ghost small" href="/login.html">Login</a> <a class="btn small" href="/login.html#register">Gratis starten</a></div>
+  </nav>
+
+  <header class="hero">
+    <h1>Rechnungen in 30 Sekunden.<br>Als PDF. Ohne Excel.</h1>
+    <p>Für Freelancer, Kleinunternehmer und Nebenjobs. Positionen eintippen, Rechnung herunterladen, fertig – inklusive §19-Hinweis für Kleinunternehmer.</p>
+    <a class="btn" href="/login.html#register">Kostenlos ausprobieren</a>
+  </header>
+
+  <section>
+    <div class="grid">
+      <div class="card"><h3>⚡ Blitzschnell</h3><p>Rechnung ausfüllen und direkt als PDF speichern oder drucken.</p></div>
+      <div class="card"><h3>🧮 Rechnet automatisch</h3><p>Summen, Beträge und Rechnungsnummern – keine Tippfehler mehr.</p></div>
+      <div class="card"><h3>📁 Alles an einem Ort</h3><p>Alle Rechnungen gespeichert und jederzeit wieder abrufbar.</p></div>
+    </div>
+  </section>
+
+  <section id="preise">
+    <h2>Preise</h2>
+    <div class="grid" style="max-width:720px;margin:0 auto">
+      <div class="card">
+        <h3>Gratis</h3>
+        <div class="price">0 € <small>/ Monat</small></div>
+        <ul class="check">
+          <li>3 Rechnungen pro Monat</li>
+          <li>PDF-Download</li>
+          <li class="no">Ohne Wasserzeichen</li>
+          <li class="no">Eigenes Logo</li>
+          <li class="no">CSV-Export für die Steuer</li>
+        </ul>
+        <a class="btn ghost" href="/login.html#register">Gratis starten</a>
+      </div>
+      <div class="card highlight">
+        <h3>Pro <span class="badge">Beliebt</span></h3>
+        <div class="price">4,99 € <small>/ Monat</small></div>
+        <ul class="check">
+          <li>Unbegrenzt viele Rechnungen</li>
+          <li>PDF-Download</li>
+          <li>Ohne Wasserzeichen</li>
+          <li>Eigenes Logo</li>
+          <li>CSV-Export für die Steuer</li>
+        </ul>
+        <a class="btn pro" href="/login.html#register">Pro holen</a>
+        <p style="color:var(--muted);font-size:.85rem">Jederzeit monatlich kündbar.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>© <span id="y"></span> Rechnungsblitz · <a href="/impressum.html">Impressum &amp; Datenschutz</a></footer>
+</div>
+<script>document.getElementById("y").textContent = new Date().getFullYear();</script>
+</body>
+</html>

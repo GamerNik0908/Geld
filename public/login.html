@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Login</title>
+<link rel="stylesheet" href="style.css">
+<script src="common.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <nav><a class="logo" href="/">⚡ Rechnungs<span>blitz</span></a></nav>
+  <div class="card" style="max-width:420px;margin:40px auto">
+    <h2 id="title">Einloggen</h2>
+    <form id="form">
+      <div class="field"><label for="email">E-Mail</label><input id="email" type="email" required autocomplete="email"></div>
+      <div class="field"><label for="password">Passwort</label><input id="password" type="password" required minlength="8" autocomplete="current-password"></div>
+      <div id="msg" hidden></div>
+      <button class="btn" id="submit" style="width:100%">Einloggen</button>
+    </form>
+    <p style="text-align:center"><a href="#" id="toggle">Noch kein Konto? Registrieren</a></p>
+  </div>
+</div>
+<script>
+let register = location.hash === "#register";
+function render() {
+  $("title").textContent = $("submit").textContent = register ? "Konto erstellen" : "Einloggen";
+  $("toggle").textContent = register ? "Schon ein Konto? Einloggen" : "Noch kein Konto? Registrieren";
+  $("password").autocomplete = register ? "new-password" : "current-password";
+}
+$("toggle").onclick = (e) => { e.preventDefault(); register = !register; render(); };
+$("form").onsubmit = async (e) => {
+  e.preventDefault();
+  try {
+    await api(register ? "/register" : "/login", "POST", { email: $("email").value, password: $("password").value });
+    location.href = "/app.html";
+  } catch (err) { showMsg($("msg"), err.message); }
+};
+render();
+</script>
+</body>
+</html>

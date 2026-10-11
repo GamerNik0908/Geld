@@ -1,0 +1,17 @@
+{
+  "name": "rechnungsblitz",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Rechnungs-Tool mit Gratis-Plan und Pro-Abo (Stripe)",
+  "main": "server.js",
+  "type": "commonjs",
+  "engines": { "node": ">=22.13" },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "stripe": "^18.0.0"
+  }
+}
